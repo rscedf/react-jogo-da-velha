@@ -5,13 +5,11 @@ import styles = importa css
 import GameOption = importa o status x ou 0
 
 */
-
-
 import {useState, useEffect} from 'react'
 import styles from './Game.module.css'
 
-import Icon from '../icon/Icon'
 import GameOption from '../gameOption/GameOption'
+import GameInfo from '../gameInfo/GameInfo'
 
 /* winnerTable  = array com possibilidades de vitória */
 
@@ -48,6 +46,12 @@ function Game(){
         }
         
    }
+
+   /*Reinicia o jogo */
+   const handleReset = ()=>{
+        setGameState(Array(9).fill(0)) /* zera o array deixando em branco  */
+        setWinner(0) /*zera o ganhador  */
+    }
 
    /*winnerTable.forEach(()=>{   percorre o winnerTable dos resultado
     const value= line.map((pos)=> gameState[pos])  pega o valor da posição
@@ -97,16 +101,12 @@ function Game(){
                 )
             }
              </div>
-
-             <div className={styles.gameInfo}>
-                <h4>Próximo a jogar:</h4>
-                {
-                    currentPlayer === 1 && <Icon iconName="circle" />
-                }
-                {
-                    currentPlayer === -1 && <Icon iconName="x" />
-                }
-             </div>
+            <GameInfo
+                currentPlayer = {currentPlayer}
+                winner = {winner}
+                onReset={handleReset}
+            />
+             
         </div>
         
         
