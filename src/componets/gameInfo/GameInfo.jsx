@@ -24,7 +24,15 @@ function GameInfo({currentPlayer, winner, onReset}){
                 </>
             }
             {
-                winner != 0 && /* define campeão se diferente de  0 */
+                winner === 2 &&
+                <>
+                    <h4>Empate</h4>
+                </>
+
+            }
+                
+            {
+                ((winner != 0)&&(winner!=2)) && /* define campeão se diferente de  0 */
                     <>
                         <h4>Fim de Jogo! Campeão:</h4>
                         {

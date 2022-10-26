@@ -33,16 +33,19 @@ setGameState(newGameState)  = setGame recebe o valor de newGameState
 const[winner, setWinner]= useState(0)  = variável para verificar campeão
         0 ninguém / 1 campeão 1 / 2 campeão 2
  */
+const quantClic= 0       
 function Game(){
     const[gameState, setGameState]=useState(Array(9).fill(0))
     const[currentPlayer, setCurrentPlayer]= useState(-1)
     const[winner, setWinner]= useState(0)
+    
 
     const handleClic = (pos)=>{
         if(gameState[pos] === 0 && winner===0){
             let newGameState = [...gameState]
             newGameState[pos]= currentPlayer            
             setGameState(newGameState)
+            quantClic++
         }
         
    }
@@ -51,6 +54,7 @@ function Game(){
    const handleReset = ()=>{
         setGameState(Array(9).fill(0)) /* zera o array deixando em branco  */
         setWinner(0) /*zera o ganhador  */
+        quantClic =0
     }
 
    /*winnerTable.forEach(()=>{   percorre o winnerTable dos resultado
@@ -65,6 +69,9 @@ function Game(){
             const soma = values.reduce((soma, valTotal)=> soma + valTotal)
             if(soma===3 || soma === -3) setWinner(soma/3)
         })
+        if(quantClic>=9){ /*se numero jogadas maior = o termina */
+            setWinner(2)            
+        } 
    }
 
 
