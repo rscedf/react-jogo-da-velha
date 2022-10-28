@@ -38,6 +38,7 @@ function Game(){
     const[gameState, setGameState]=useState(Array(9).fill(0))
     const[currentPlayer, setCurrentPlayer]= useState(-1)
     const[winner, setWinner]= useState(0)
+    const[winnerLine, setWinnerLine]= useState([])
     
 
     const handleClic = (pos)=>{
@@ -54,6 +55,7 @@ function Game(){
    const handleReset = ()=>{
         setGameState(Array(9).fill(0)) /* zera o array deixando em branco  */
         setWinner(0) /*zera o ganhador  */
+        setWinnerLine([])/*zera linha */
         quantClic =0
     }
 
@@ -67,12 +69,21 @@ function Game(){
         winnerTable.forEach((line)=>{
             const values= line.map((pos)=> gameState[pos])
             const soma = values.reduce((soma, valTotal)=> soma + valTotal)
-            if(soma===3 || soma === -3) setWinner(soma/3)
+            if(soma===3 || soma === -3) {
+                setWinner(soma/3)
+                setWinnerLine(line)                
+            }
+
         })
         if(quantClic>=9){ /*se numero jogadas maior = o termina */
             setWinner(2)            
         } 
    }
+
+   /* verificar se posição linha é vencedora */
+   const verifyWinnerLine = (pos)=>
+    winnerLine.find((value)=> value === pos) !== undefined
+    
 
 
    /* useEffect = primeiro parâmetro sempre uma função e 
@@ -104,6 +115,8 @@ function Game(){
                     key={`game-option-pos-${pos}`}
                     status = {value}
                     onClick={()=> handleClic(pos)}
+                    isWinner = {verifyWinnerLine(pos)}
+                    
                     />
                 )
             }
