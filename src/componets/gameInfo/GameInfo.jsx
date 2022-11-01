@@ -3,16 +3,18 @@ import styles from './GameInfo.module.css'
 import Icon from '../icon/Icon'
 import Button from '../button/Button'
 
-function GameInfo({currentPlayer, winner, onReset}){
+function GameInfo({currentPlayer, winner, onReset,isDraw}){
 
     const shouldEnableButton = ()=>{
         if(winner !== 0) return true
+        if(isDraw) return true
     }
-
+ 
+    
     return (
         <div className={styles.gameInfo}>
             {
-                winner === 0 && /* só mostra o próximo jogador se = 0 */
+                ! isDraw && winner === 0 && /* só mostra o próximo jogador se isDraw for falso e winner = 0 */
                 <>
                     <h4>Próximo a jogar:</h4>
                     {
@@ -23,16 +25,10 @@ function GameInfo({currentPlayer, winner, onReset}){
                     }                
                 </>
             }
-            {
-                winner === 2 &&
-                <>
-                    <h4>Empate</h4>
-                </>
-
-            }
+            
                 
             {
-                ((winner != 0)&&(winner!=2)) && /* define campeão se diferente de  0 */
+                ! isDraw && winner != 0 && /* define campeão se isDraw for falso e winnwe diferente de  0 */
                     <>
                         <h4>Fim de Jogo! Campeão:</h4>
                         {
@@ -44,6 +40,11 @@ function GameInfo({currentPlayer, winner, onReset}){
                 
                     </>
             }
+            {
+                isDraw && <h4>Empate!</h4> /* se isDraw true */               
+
+            }
+
             <Button 
             onClick = {onReset}
             disabled = {!shouldEnableButton()}

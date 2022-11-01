@@ -33,22 +33,21 @@ setGameState(newGameState)  = setGame recebe o valor de newGameState
 const[winner, setWinner]= useState(0)  = variável para verificar campeão
         0 ninguém / 1 campeão 1 / 2 campeão 2
  */
-const quantClic= 0       
+       
 function Game(){
     const[gameState, setGameState]=useState(Array(9).fill(0))
     const[currentPlayer, setCurrentPlayer]= useState(-1)
     const[winner, setWinner]= useState(0)
     const[winnerLine, setWinnerLine]= useState([])
+    const[draw, setDraw]= useState(false)/* verifica empate*/
     
 
     const handleClic = (pos)=>{
         if(gameState[pos] === 0 && winner===0){
             let newGameState = [...gameState]
             newGameState[pos]= currentPlayer            
-            setGameState(newGameState)
-            quantClic++
-        }
-        
+            setGameState(newGameState)            
+        }        
    }
 
    /*Reinicia o jogo */
@@ -56,7 +55,7 @@ function Game(){
         setGameState(Array(9).fill(0)) /* zera o array deixando em branco  */
         setWinner(0) /*zera o ganhador  */
         setWinnerLine([])/*zera linha */
-        quantClic =0
+        setDraw(false)
     }
 
    /*winnerTable.forEach(()=>{   percorre o winnerTable dos resultado
@@ -71,14 +70,19 @@ function Game(){
             const soma = values.reduce((soma, valTotal)=> soma + valTotal)
             if(soma===3 || soma === -3) {
                 setWinner(soma/3)
-                setWinnerLine(line)                
+                setWinnerLine(line)                                               
             }
-
-        })
-        if(quantClic>=9){ /*se numero jogadas maior = o termina */
-            setWinner(2)            
-        } 
+        })                    
+         
    }
+
+   /* verifica se houve empate */ 
+   const verifyDraw = ()=>{
+        if(gameState.find((value)=>value === 0) ===undefined && winner ===0){ /*se existe valor zero no gameState  e se winner ==0*/
+            setDraw(true)
+        }
+   }
+   
 
    /* verificar se posição linha é vencedora */
    const verifyWinnerLine = (pos)=>
@@ -95,7 +99,12 @@ function Game(){
    useEffect(()=>{    
     setCurrentPlayer(currentPlayer * -1)
     verifyGame()
+    verifyDraw()
    }, [gameState])
+
+   useEffect(()=>{ /* garante que não houve ganhador durante a execução */ 
+    if(winner !== 0)setDraw(false)
+   },[winner])
 
 
    /*  
@@ -116,7 +125,7 @@ function Game(){
                     status = {value}
                     onClick={()=> handleClic(pos)}
                     isWinner = {verifyWinnerLine(pos)}
-                    
+                    isDraw = {draw}
                     />
                 )
             }
@@ -125,6 +134,7 @@ function Game(){
                 currentPlayer = {currentPlayer}
                 winner = {winner}
                 onReset={handleReset}
+                isDraw={draw}
             />
              
         </div>
