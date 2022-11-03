@@ -10,6 +10,7 @@ import styles from './Game.module.css'
 
 import GameOption from '../gameOption/GameOption'
 import GameInfo from '../gameInfo/GameInfo'
+import Score from '../score/Score'
 
 /* winnerTable  = array com possibilidades de vitória */
 
@@ -116,30 +117,30 @@ function Game(){
     cria escritas do lado tabuleiro
    */
     return(
-        <div className={styles.gameContent}>
-            <div className={styles.game}>
-            {
-                gameState.map((value, pos)=>
-                    <GameOption 
-                    key={`game-option-pos-${pos}`}
-                    status = {value}
-                    onClick={()=> handleClic(pos)}
-                    isWinner = {verifyWinnerLine(pos)}
-                    isDraw = {draw}
-                    />
-                )
-            }
-             </div>
-            <GameInfo
-                currentPlayer = {currentPlayer}
-                winner = {winner}
-                onReset={handleReset}
-                isDraw={draw}
-            />
-             
-        </div>
-        
-        
+        <>
+            <div className={styles.gameContent}>
+                <div className={styles.game}>
+                {
+                    gameState.map((value, pos)=>
+                        <GameOption 
+                        key={`game-option-pos-${pos}`}
+                        status = {value}
+                        onClick={()=> handleClic(pos)}
+                        isWinner = {verifyWinnerLine(pos)}
+                        isDraw = {draw}
+                        />
+                    )
+                }
+                </div>
+                <GameInfo
+                    currentPlayer = {currentPlayer}
+                    winner = {winner}
+                    onReset={handleReset}
+                    isDraw={draw}
+                />             
+            </div>
+        <Score/>
+        </>
     )
 }
 
