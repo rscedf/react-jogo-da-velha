@@ -41,6 +41,8 @@ function Game(){
     const[winner, setWinner]= useState(0)
     const[winnerLine, setWinnerLine]= useState([])
     const[draw, setDraw]= useState(false)/* verifica empate*/
+    const[scoreCircle, setScoreCircle]= useState(0)
+    const[scoreX, setScoreX]= useState(0)
     
 
     const handleClic = (pos)=>{
@@ -71,8 +73,17 @@ function Game(){
             const soma = values.reduce((soma, valTotal)=> soma + valTotal)
             if(soma===3 || soma === -3) {
                 setWinner(soma/3)
-                setWinnerLine(line)                                               
+                setWinnerLine(line)                                                           
             }
+            
+            if(soma === 3){
+                setScoreCircle(scoreCircle + 1)                                
+            }
+            if(soma === -3) {
+                setScoreX (scoreX + 1)                                  
+            }
+            
+            
         })                    
          
    }
@@ -117,6 +128,7 @@ function Game(){
     cria escritas do lado tabuleiro
    */
     return(
+        
         <>
             <div className={styles.gameContent}>
                 <div className={styles.game}>
@@ -137,9 +149,19 @@ function Game(){
                     winner = {winner}
                     onReset={handleReset}
                     isDraw={draw}
-                />             
+                />   
+                
+                        
             </div>
-        <Score/>
+
+            <div>
+                <Score
+                
+                    isScoreCircle={scoreCircle}
+                    isScoreX = {scoreX}
+                />
+            </div>
+            
         </>
     )
 }
